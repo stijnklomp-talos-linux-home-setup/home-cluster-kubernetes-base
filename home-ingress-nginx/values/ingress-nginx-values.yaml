@@ -1,0 +1,28 @@
+controller:
+  service:
+    type: LoadBalancer
+    # IP is assigned by MetalLB from the home-lan pool
+  ingressClassResource:
+    name: nginx
+    enabled: true
+    default: true
+  config:
+    force-ssl-redirect: "true"
+    allow-snippet-annotations: "true"
+
+  # Required for Pinniped (supervisor + impersonation proxy TLS passthrough):
+  # a CLI FLAG in current controllers — the config.enable-ssl-passthrough
+  # ConfigMap key is ignored (kept out on purpose).
+  extraArgs:
+    enable-ssl-passthrough: "true"
+
+  # Runs on the Lenovo worker pool; control plane stays kube-system only
+  nodeSelector:
+    node-role.kubernetes.io/worker: ""
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      memory: 1Gi

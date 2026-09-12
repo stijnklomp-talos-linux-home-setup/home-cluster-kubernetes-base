@@ -1,0 +1,14 @@
+helmDefaults:
+  createNamespace: true
+  wait: true
+  timeout: 900 # 15 minutes
+
+releases:
+  - name: ingress-nginx
+    namespace: ingress-nginx
+    chart: ./charts/upstream/ingress-nginx-4.15.1.tgz
+    version: 4.15.1
+    labels:
+      stage: "upstream"
+    values:
+      - values/ingress-nginx-values.yaml
